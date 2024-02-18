@@ -4,6 +4,7 @@ public class Portal : MonoBehaviour
 {
     public Vector3 rotationSpeed = new Vector3(4f, 3f, 3.5f);
     public float teleportTime = 0.2f;
+    public bool rotate = false;
 
     Portal otherPortal;
     bool isSet = false;
@@ -11,13 +12,21 @@ public class Portal : MonoBehaviour
 
     private void Update()
     {
-      //  transform.parent.Rotate(rotationSpeed * Time.deltaTime);
+        if(rotate)
+            transform.parent.Rotate(rotationSpeed * Time.deltaTime);
     }
 
-    public void SetPortal(Portal portal)
+    public bool SetPortal(Portal portal)
     {
-        if (isSet) return;
+        if (isSet) return false;
         otherPortal = portal;
+        isSet = true;
+        return true;
+    }
+
+    public bool isPortalSet()
+    {
+        return isSet;
     }
 
     void Teleport(GameObject other)
@@ -25,9 +34,10 @@ public class Portal : MonoBehaviour
         if (!teleporting && otherPortal != null)
         {
             otherPortal.Recieve();
-            other.transform.position = otherPortal.gameObject.transform.position;
-            //Debug.Log("Teleporting " + other.name + " to ......" + new Vector3(x, y, z));
-           Debug.Log("Teleporting to " + otherPortal.gameObject.transform.position);
+            Recieve();
+            if (other.gameObject.GetComponent<StarterAssets.ThirdPersonController>() != null)
+                other.gameObject.GetComponent<StarterAssets.ThirdPersonController>().MoveTo(otherPortal.gameObject.transform.position);
+            else other.transform.position = otherPortal.gameObject.transform.position;
         }
     }
 
@@ -45,7 +55,7 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")            
             Teleport(other.gameObject);
 
     }

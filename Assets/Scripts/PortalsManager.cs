@@ -12,19 +12,26 @@ public class PortalsManager : MonoBehaviour
 
     private void InitializePortals()
     {
-        for(int i = 0; i < portals.Length/2; i++)
-        {
-            int index = i + portals.Length / 2;
+        bool set = false;
 
-            if (portals[index] != null)
+        for (int i = 0; i < portals.Length - 1; i++)
+        {
+            if (portals[i].isPortalSet()) continue;
+            
+            while (!set)
             {
-                portals[i].SetPortal(portals[index]);
-                portals[index].SetPortal(portals[i]);
+                int ranIndex = Random.Range(i + 1, portals.Length);
+                if (portals[ranIndex].SetPortal(portals[i]))
+                {
+                    set = true;
+                    portals[i].SetPortal(portals[ranIndex]);
+                    //break;
+                }
             }
+
+            set = false;
         }
 
-        foreach (Portal p in portals)
-            p.PrintInfo();
     }
 
    

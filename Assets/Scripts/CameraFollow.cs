@@ -7,16 +7,24 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset = new Vector3(1f, 0f, 2f);
 
     GameObject player;
+    Vector3 startPos;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log(player.name);
+        startPos = player.transform.position;
     }
 
     private void Update()
     {
         transform.position = player.transform.position + offset;
+
+        if (Input.GetKey(KeyCode.Return))
+        {
+            player.transform.position = startPos;
+            Debug.Log("Restarting.....");
+        }
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{

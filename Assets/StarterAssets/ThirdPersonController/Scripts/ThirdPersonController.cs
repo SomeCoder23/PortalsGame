@@ -98,6 +98,10 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        private bool teleporting = false;
+        private bool isMoving = false;
+        private float timer = 0.2f;
+
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
@@ -138,6 +142,7 @@ namespace StarterAssets
             
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
+          // _controller.detectCollisions = true;
             _input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
@@ -158,12 +163,44 @@ namespace StarterAssets
 
             JumpAndGravity();
             GroundedCheck();
-            Move();
+            if(!teleporting && !isMoving)
+             Move();
+            else if(teleporting)
+            {
+                if (timer > 0)
+                    timer -= Time.deltaTime;
+                else
+                {
+                    timer = 0.2f;
+                    teleporting = false;
+                    Debug.Log("Player DOne teleporting");
+                }
+            }
         }
 
         private void LateUpdate()
         {
             CameraRotation();
+        }
+
+        public void MoveTo(Vector3 destination)
+        {
+            gameObject.transform.position = destination;
+            Debug.Log("Player Pos: " + gameObject.transform.position + " Moving player to " + destination);
+            teleporting = true;
+        }
+
+        public void MovePlayer(Vector3 direction)
+        {
+            Debug.Log("Player is moving...");
+            transform.Translate(direction);
+            isMoving = true;
+
+        }
+
+        public void StopMoving()
+        {
+            isMoving = false;
         }
 
         private void AssignAnimationIDs()
