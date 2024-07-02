@@ -37,7 +37,10 @@ public class Portal : MonoBehaviour
             Recieve();
             if (other.gameObject.GetComponent<StarterAssets.ThirdPersonController>() != null)
                 other.gameObject.GetComponent<StarterAssets.ThirdPersonController>().MoveTo(otherPortal.gameObject.transform.position);
-            else other.transform.position = otherPortal.gameObject.transform.position;
+            else
+            {
+                other.transform.position = otherPortal.gameObject.transform.position;
+            }
         }
     }
 
@@ -55,8 +58,10 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")            
+        if (other.tag == "Player")
+        {
             Teleport(other.gameObject);
+        }
 
     }
 

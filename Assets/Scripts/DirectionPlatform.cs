@@ -8,20 +8,30 @@ public class DirectionPlatform : MonoBehaviour
     public int direction;
     public float speed;
 
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Colliding with " + collision.gameObject.name);
+        Debug.Log("CollidED with"+ collision.gameObject.name);
         MoveObject(collision.gameObject);
+
     }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        Debug.Log("EXITED COLLISION WIHT: " + collision.gameObject.name);
+        if (collision.gameObject.GetComponent<StarterAssets.ThirdPersonController>() != null)
+            collision.gameObject.GetComponent<StarterAssets.ThirdPersonController>().StopMoving();
+    }
+
 
     void MoveObject(GameObject thing)
     {
         Debug.Log("Moving..." + thing.name);
-        //if (thing.gameObject.GetComponent<StarterAssets.ThirdPersonController>() != null)
-        //    thing.gameObject.GetComponent<StarterAssets.ThirdPersonController>().MovePlayer(transform.forward * speed * direction * Time.deltaTime);
-        //else 
-        thing.transform.Translate(transform.forward * speed * direction * Time.deltaTime);
+        if (thing.gameObject.GetComponent<StarterAssets.ThirdPersonController>() != null)
+            thing.gameObject.GetComponent<StarterAssets.ThirdPersonController>().StartMoving(transform.forward * speed * direction * Time.deltaTime);
+        else
+            thing.transform.Translate(transform.forward * speed * direction * Time.deltaTime);
     }
+
 
     //private void OnCollisionExit(Collision collision)
     //{

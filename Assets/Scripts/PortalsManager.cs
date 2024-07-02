@@ -17,7 +17,7 @@ public class PortalsManager : MonoBehaviour
         for (int i = 0; i < portals.Length - 1; i++)
         {
             if (portals[i].isPortalSet()) continue;
-            
+
             while (!set)
             {
                 int ranIndex = Random.Range(i + 1, portals.Length);

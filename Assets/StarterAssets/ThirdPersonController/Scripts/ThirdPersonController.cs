@@ -102,6 +102,8 @@ namespace StarterAssets
         private bool isMoving = false;
         private float timer = 0.2f;
 
+        Vector3 direction = new Vector3(0, 0, 0);
+
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
@@ -163,7 +165,7 @@ namespace StarterAssets
 
             JumpAndGravity();
             GroundedCheck();
-            if(!teleporting && !isMoving)
+            if(!teleporting)
              Move();
             else if(teleporting)
             {
@@ -186,16 +188,15 @@ namespace StarterAssets
         public void MoveTo(Vector3 destination)
         {
             gameObject.transform.position = destination;
-            Debug.Log("Player Pos: " + gameObject.transform.position + " Moving player to " + destination);
             teleporting = true;
         }
 
-        public void MovePlayer(Vector3 direction)
-        {
-            Debug.Log("Player is moving...");
-            transform.Translate(direction);
-            isMoving = true;
+     
 
+        public void StartMoving(Vector3 direction)
+        {
+            isMoving = true;
+            this.direction = direction;
         }
 
         public void StopMoving()
@@ -257,7 +258,14 @@ namespace StarterAssets
 
             // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is no input, set the target speed to 0
-            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+            if (isMoving)
+                _controller.Move(direction);
+
+            if (_input.move == Vector2.zero)
+            {
+                targetSpeed = 0.0f;
+                //return;
+            }
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
