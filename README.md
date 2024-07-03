@@ -6,4 +6,7 @@ Welcome to the repository for my space themed 3D platformer game. This project i
 
 ## Preview
 
-The game environment so far: [Watch the video!](https://drive.google.com/file/d/15MCYSASJbnpeSuGFoL1pnBW88FC6qxuL/view?usp=sharing)
+The game environment so far: 
+
+[![Watch the video](https://github.com/SomeCoder23/PortalsGame/blob/main/Video/Screenshot%202024-07-03%20101506.png)](https://drive.google.com/file/d/15MCYSASJbnpeSuGFoL1pnBW88FC6qxuL/view?usp=sharing)
+
